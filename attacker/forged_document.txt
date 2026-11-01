@@ -1,0 +1,5 @@
+SYNTHETIC CERTIFICATE OF COMPLETION
+-----------------------------------
+Issued to : Mallory (attacker)
+Issued by : Alice Author
+Statement : FORGED - Alice never wrote or signed this document.

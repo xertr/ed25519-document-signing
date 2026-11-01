@@ -1,0 +1,38 @@
+=== Malformed-input handling (must not crash) ===
+
+--- M1 empty document file ---
+$ python3 sign_verify.py verify --doc experiment_work/empty.txt --sig sample/document.sig --pubkey sample/author_public.pem
+INVALID SIGNATURE: signature does not match document and key
+[exit code 1]
+==> AS EXPECTED (expected exit 1)
+
+--- M2 garbage public key PEM ---
+$ python3 sign_verify.py verify --doc sample/document.txt --sig sample/document.sig --pubkey experiment_work/garbage_key.pem
+MALFORMED PUBLIC KEY: could not parse PEM (ValueError)
+[exit code 2]
+==> AS EXPECTED (expected exit 2)
+
+--- M3 empty public key file ---
+$ python3 sign_verify.py verify --doc sample/document.txt --sig sample/document.sig --pubkey experiment_work/empty_key.pem
+MALFORMED PUBLIC KEY: could not parse PEM (ValueError)
+[exit code 2]
+==> AS EXPECTED (expected exit 2)
+
+--- M4 empty signature file ---
+$ python3 sign_verify.py verify --doc sample/document.txt --sig experiment_work/empty.sig --pubkey sample/author_public.pem
+MALFORMED SIGNATURE: expected 64 bytes, got 0
+[exit code 2]
+==> AS EXPECTED (expected exit 2)
+
+--- M5 nonexistent document ---
+$ python3 sign_verify.py verify --doc no_such_file.txt --sig sample/document.sig --pubkey sample/author_public.pem
+FILE NOT FOUND: no_such_file.txt
+[exit code 3]
+==> AS EXPECTED (expected exit 3)
+
+--- M6 valid PEM but wrong algorithm (P-256) ---
+$ python3 sign_verify.py verify --doc sample/document.txt --sig sample/document.sig --pubkey experiment_work/ec_key.pem
+MALFORMED PUBLIC KEY: not an Ed25519 key
+[exit code 2]
+==> AS EXPECTED (expected exit 2)
+

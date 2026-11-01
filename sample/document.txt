@@ -1,0 +1,9 @@
+SYNTHETIC CERTIFICATE OF COMPLETION
+-----------------------------------
+Issued to : Example Student
+Course    : Modern Cryptography
+Project   : Project 4 - Digital Signature-Based Document Verification
+Issued by : Alice Author
+Date      : 2026-11-01
+
+This certificate is a synthetic sample created for a course demonstration.

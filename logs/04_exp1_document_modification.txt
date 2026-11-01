@@ -1,0 +1,34 @@
+=== Experiment 1: document modification ===
+
+Changed byte 84: 'E' -> 'e' in 'Example Student'
+
+--- 1a one character changed ---
+$ python3 sign_verify.py verify --doc experiment_work/doc_one_char.txt --sig sample/document.sig --pubkey sample/author_public.pem
+INVALID SIGNATURE: signature does not match document and key
+[exit code 1]
+==> AS EXPECTED (expected exit 1)
+
+Flipped one bit of byte 0
+
+--- 1b single bit flipped ---
+$ python3 sign_verify.py verify --doc experiment_work/doc_one_bit.txt --sig sample/document.sig --pubkey sample/author_public.pem
+INVALID SIGNATURE: signature does not match document and key
+[exit code 1]
+==> AS EXPECTED (expected exit 1)
+
+Appended one trailing newline
+
+--- 1c trailing newline added ---
+$ python3 sign_verify.py verify --doc experiment_work/doc_trailing_newline.txt --sig sample/document.sig --pubkey sample/author_public.pem
+INVALID SIGNATURE: signature does not match document and key
+[exit code 1]
+==> AS EXPECTED (expected exit 1)
+
+Converted LF line endings to CRLF
+
+--- 1d CRLF line endings ---
+$ python3 sign_verify.py verify --doc experiment_work/doc_crlf.txt --sig sample/document.sig --pubkey sample/author_public.pem
+INVALID SIGNATURE: signature does not match document and key
+[exit code 1]
+==> AS EXPECTED (expected exit 1)
+

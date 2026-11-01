@@ -1,0 +1,41 @@
+=== Experiment 4: public-key substitution (controlled simulation) ===
+
+Trusted fingerprint of Alice (obtained out of band): 2684:7701:6f5e:48ed:a536:b801:0ae6:fbd0:3b5e:b7dc:b45d:9a41:393d:a79e:3392:b5f3
+
+Step 1. Normal situation: keyserver serves Alice's genuine key
+$ python3 sign_verify.py verify --doc sample/document.txt --sig sample/document.sig --pubkey keyserver_sim/alice_public.pem
+VALID: signature verifies under key 2684:7701:6f5e:48ed:a536:b801:0ae6:fbd0:3b5e:b7dc:b45d:9a41:393d:a79e:3392:b5f3
+  (key NOT authenticated (no fingerprint pinned))
+[exit code 0]
+
+Step 2. Mallory generates her own keypair, forges a document, signs it
+   attacker/forged_document.txt, attacker/forged.sig, attacker/mallory_public.pem created
+
+Step 3. Mallory compromises the distribution channel: the keyserver file that
+        claims to be 'alice_public.pem' is replaced with Mallory's public key
+
+Step 4. VICTIM WITHOUT KEY AUTHENTICATION downloads 'Alice's key' and verifies
+$ python3 sign_verify.py verify --doc attacker/forged_document.txt --sig attacker/forged.sig --pubkey keyserver_sim/alice_public.pem
+VALID: signature verifies under key 8296:e05e:85bc:7692:3ba2:9463:a3b9:71fd:b71c:7f61:977c:8a4f:3e3c:eb24:9668:9960
+  (key NOT authenticated (no fingerprint pinned))
+[exit code 0]
+
+   -> The forgery verifies as VALID. The math is correct; the TRUST is broken.
+      A valid signature only proves the signer held the key that was presented.
+
+Step 5. DEFENCE: victim pins Alice's fingerprint obtained out of band
+$ python3 sign_verify.py verify --doc attacker/forged_document.txt --sig attacker/forged.sig --pubkey keyserver_sim/alice_public.pem --fingerprint \
+      2684:7701:6f5e:48ed:a536:b801:0ae6:fbd0:3b5e:b7dc:b45d:9a41:393d:a79e:3392:b5f3
+UNTRUSTED KEY: fingerprint mismatch
+  expected: 2684:7701:6f5e:48ed:a536:b801:0ae6:fbd0:3b5e:b7dc:b45d:9a41:393d:a79e:3392:b5f3
+  presented: 8296:e05e:85bc:7692:3ba2:9463:a3b9:71fd:b71c:7f61:977c:8a4f:3e3c:eb24:9668:9960
+[exit code 4]
+
+Step 6. DEFENCE, genuine key restored: Alice's real document still verifies when pinned
+$ python3 sign_verify.py verify --doc sample/document.txt --sig sample/document.sig --pubkey keyserver_sim/alice_public.pem --fingerprint \
+      2684:7701:6f5e:48ed:a536:b801:0ae6:fbd0:3b5e:b7dc:b45d:9a41:393d:a79e:3392:b5f3
+VALID: signature verifies under key 2684:7701:6f5e:48ed:a536:b801:0ae6:fbd0:3b5e:b7dc:b45d:9a41:393d:a79e:3392:b5f3
+  (key matches pinned fingerprint)
+[exit code 0]
+
+=== RESULT: attack succeeds without key authentication; blocked by fingerprint pinning ===

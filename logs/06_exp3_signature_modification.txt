@@ -1,0 +1,50 @@
+=== Experiment 3: signature modification ===
+
+Flipped all bits of signature byte 10 (inside R)
+
+--- 3a byte in R half modified ---
+$ python3 sign_verify.py verify --doc sample/document.txt --sig experiment_work/sig_flip_R.sig --pubkey sample/author_public.pem
+INVALID SIGNATURE: signature does not match document and key
+[exit code 1]
+==> AS EXPECTED (expected exit 1)
+
+Flipped one bit of signature byte 40 (inside S)
+
+--- 3b bit in S half modified ---
+$ python3 sign_verify.py verify --doc sample/document.txt --sig experiment_work/sig_flip_S.sig --pubkey sample/author_public.pem
+INVALID SIGNATURE: signature does not match document and key
+[exit code 1]
+==> AS EXPECTED (expected exit 1)
+
+Truncated signature to 63 bytes
+
+--- 3c truncated (63 bytes) ---
+$ python3 sign_verify.py verify --doc sample/document.txt --sig experiment_work/sig_trunc.sig --pubkey sample/author_public.pem
+MALFORMED SIGNATURE: expected 64 bytes, got 63
+[exit code 2]
+==> AS EXPECTED (expected exit 2)
+
+Padded signature to 65 bytes
+
+--- 3d padded (65 bytes) ---
+$ python3 sign_verify.py verify --doc sample/document.txt --sig experiment_work/sig_pad.sig --pubkey sample/author_public.pem
+MALFORMED SIGNATURE: expected 64 bytes, got 65
+[exit code 2]
+==> AS EXPECTED (expected exit 2)
+
+Replaced signature file with non-base64 text
+
+--- 3e garbage (not base64) ---
+$ python3 sign_verify.py verify --doc sample/document.txt --sig experiment_work/sig_garbage.sig --pubkey sample/author_public.pem
+MALFORMED SIGNATURE: not valid base64
+[exit code 2]
+==> AS EXPECTED (expected exit 2)
+
+Replaced signature with 64 random bytes
+
+--- 3f random 64-byte signature ---
+$ python3 sign_verify.py verify --doc sample/document.txt --sig experiment_work/sig_random.sig --pubkey sample/author_public.pem
+INVALID SIGNATURE: signature does not match document and key
+[exit code 1]
+==> AS EXPECTED (expected exit 1)
+

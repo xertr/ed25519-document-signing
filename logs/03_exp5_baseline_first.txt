@@ -1,0 +1,16 @@
+=== Experiment 5: original document, correct key (baseline, run first) ===
+
+--- 5a original doc + correct key ---
+$ python3 sign_verify.py verify --doc sample/document.txt --sig sample/document.sig --pubkey sample/author_public.pem
+VALID: signature verifies under key 2684:7701:6f5e:48ed:a536:b801:0ae6:fbd0:3b5e:b7dc:b45d:9a41:393d:a79e:3392:b5f3
+  (key NOT authenticated (no fingerprint pinned))
+[exit code 0]
+==> AS EXPECTED (expected exit 0)
+
+--- 5b same, with trusted fingerprint pinned ---
+$ python3 sign_verify.py verify --doc sample/document.txt --sig sample/document.sig --pubkey sample/author_public.pem --fingerprint 2684:7701:6f5e:48ed:a536:b801:0ae6:fbd0:3b5e:b7dc:b45d:9a41:393d:a79e:3392:b5f3
+VALID: signature verifies under key 2684:7701:6f5e:48ed:a536:b801:0ae6:fbd0:3b5e:b7dc:b45d:9a41:393d:a79e:3392:b5f3
+  (key matches pinned fingerprint)
+[exit code 0]
+==> AS EXPECTED (expected exit 0)
+

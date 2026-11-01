@@ -1,0 +1,24 @@
+
+=== SUMMARY ===
+[PASS] 5a original doc + correct key
+[PASS] 5b same, with trusted fingerprint pinned
+[PASS] 1a one character changed
+[PASS] 1b single bit flipped
+[PASS] 1c trailing newline added
+[PASS] 1d CRLF line endings
+[PASS] 2 verify with public key from a different keypair
+[PASS] 3a byte in R half modified
+[PASS] 3b bit in S half modified
+[PASS] 3c truncated (63 bytes)
+[PASS] 3d padded (65 bytes)
+[PASS] 3e garbage (not base64)
+[PASS] 3f random 64-byte signature
+[PASS] M1 empty document file
+[PASS] M2 garbage public key PEM
+[PASS] M3 empty public key file
+[PASS] M4 empty signature file
+[PASS] M5 nonexistent document
+[PASS] M6 valid PEM but wrong algorithm (P-256)
+[PASS] 5c original doc + correct key, after all attacks
+
+20/20 cases behaved as expected

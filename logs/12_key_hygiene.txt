@@ -1,0 +1,21 @@
+$ cat .gitignore
+# Never commit private keys
+*.key
+*private*.pem
+*_private*
+keys_private/
+__pycache__/
+
+$ ls -l ~/project4_private_keys   # private key lives OUTSIDE the repo, mode 600
+total 4
+-rw------- 1 root root 302 Nov  1 08:03 author_private.pem
+
+$ git ls-files | grep -Ei "private|\.key$"   # tracked private-key files
+(none tracked)
+
+$ grep -rlE "BEGIN (ENCRYPTED )?PRIVATE KEY" . --exclude-dir=.git --exclude=12_key_hygiene.txt   # should print nothing
+(no files contain a private key)
+
+$ head -c 40 ~/project4_private_keys/author_private.pem   # encrypted PKCS#8, never stored in repo
+-----BEGIN ENCRYPTED PRIVATE KEY-----
+MI

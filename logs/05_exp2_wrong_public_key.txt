@@ -1,0 +1,8 @@
+=== Experiment 2: wrong public key ===
+
+--- 2 verify with public key from a different keypair ---
+$ python3 sign_verify.py verify --doc sample/document.txt --sig sample/document.sig --pubkey experiment_work/other_public.pem
+INVALID SIGNATURE: signature does not match document and key
+[exit code 1]
+==> AS EXPECTED (expected exit 1)
+
